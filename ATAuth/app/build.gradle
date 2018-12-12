@@ -49,6 +49,9 @@ dependencies {
     implementation "com.android.support:support-v4:$support_version"
     implementation "com.android.support:design:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
+
+    //minSdkVersion is lower than 21 multidex support (kt+Java)
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     // ButterKnife (for code brevity)
