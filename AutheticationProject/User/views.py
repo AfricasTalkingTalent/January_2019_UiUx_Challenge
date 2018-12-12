@@ -6,6 +6,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+import uuid
+from .models import User
 
 
 @api_view(['GET'])
@@ -25,3 +27,22 @@ def get_users(request):
             }
         }
     return Response(context, status=status.HTTP_200_OK)
+
+
+@api_view(['POST'])
+def process_signup_data(request):
+    """Accepts login data from a new user and creates the user in the db after verification"""
+    data = request.data
+    first_name = data["first_name"]
+    last_name = data["last_name"]
+    phone_number = data["phone_number"]
+    email = data["email"]
+    user, created = User.objects.update_or_create(
+        email_address=email,
+        defaults={
+            "first_name": first_name,
+            "last_name": last_name,
+            "phone_number": phone_number,
+        }
+    )
+    return Response(status=status.HTTP_201_CREATED)
