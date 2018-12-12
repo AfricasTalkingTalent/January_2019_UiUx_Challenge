@@ -52,7 +52,7 @@ You can participate on as many challenges as you wish:
 >Pull all changes, make sure your repository is up to date
 
 ```sh
-$ cd UIUXCodeChallengeSeptember2018
+$ cd January_2019_UiUx_Challenge
 $ git pull origin master
 ```
 
@@ -80,8 +80,7 @@ $ git push origin -u 25472XXXXXXX
 
 4.Commit the changes to your fork.
 
-5.Make a pull request to the UIUXCodeChallengeSeptember2018 
-Repo.
+5.Make a pull request to the January_2019_UiUx_Challenge Repo.
 
 
 ## Get Support from Africa's Talking
