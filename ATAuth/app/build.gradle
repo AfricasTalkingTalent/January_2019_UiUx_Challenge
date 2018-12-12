@@ -13,6 +13,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        ndk {
+            abiFilters "armeabi", "x86"
+        }
     }
     buildTypes {
         release {
@@ -42,6 +45,9 @@ dependencies {
 
     //sweet alert dialogue
     implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+
+    // Get all AT services
+    implementation 'com.africastalking:client:3.0.6'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
