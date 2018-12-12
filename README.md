@@ -2,7 +2,7 @@
 
 Here's the challenge for anyone hoping to join the UI/UX team for the January to March Cohort at Africa's Talking. 
 
-## This challenge is due at 2000 HRS EAT on 13th December 2018
+## This challenge is due 2000hrs EAT on 13th December 2018
 
 ## Simple Unchanging Rules
 The code challenge is and will always be judged using the following criteria:
@@ -13,7 +13,7 @@ The code challenge is and will always be judged using the following criteria:
 
 ## Terms and Conditions
 You can participate on as many challenges as you wish:
-  - Do not share any code that you cannot opensource on the Git Repository as its open source and Africa's Talking will not be liable for any breach of intellectual property (if any) once shared on the platform.
+  - Do not share any code that you cannot oat 2000 HRSpensource on the Git Repository as its open source and Africa's Talking will not be liable for any breach of intellectual property (if any) once shared on the platform.
   - Code Challenges are time bound - the time restriction is specified on the challenge
   - Additional rules MAY be provided on the code challenge and will vary for each challenge
   - You are free to use your tools of choice as long as they fall under the rules of the challenge as below
@@ -87,4 +87,4 @@ Repo.
 ## Get Support from Africa's Talking
 In case you have any questions, reach out [Roina Ochieng](mailto:rochieng@africastalking.com) or [Anthony Kiplimo](mailto:anthony.kiplimo@africastalking.com)
 
-## Submissions later than 1800 HRS EAT on 12th September 2018 will not be considered
+## Submissions later than 2000hrs EAT on 13th December 2018 will not be considered
