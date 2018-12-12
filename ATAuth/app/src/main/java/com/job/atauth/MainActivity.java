@@ -1,5 +1,6 @@
 package com.job.atauth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +21,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        connectToServer();
+        //connectToServer();
+        startActivity(new Intent(this,PhoneAuthActivity.class));
     }
 
 
@@ -35,8 +37,11 @@ public class MainActivity extends AppCompatActivity {
             /*
             Put a notice in our log that we are attempting to initialize
              */
-            Log.e("NOTICE", "Attempting to intialize server");
-            AfricasTalking.initialize(BuildConfig.RPC_HOST, BuildConfig.RPC_PORT, true);
+            Log.e("NOTICE", "Attempting to initialize server");
+            //AfricasTalking.initialize(BuildConfig.RPC_HOST, BuildConfig.RPC_PORT, true);
+            String host = "192.168.8.101";
+             int port = 8080;
+            AfricasTalking.initialize(host, port, true);
 
             //Use AT's Logger to get any message
             AfricasTalking.setLogger(new Logger() {

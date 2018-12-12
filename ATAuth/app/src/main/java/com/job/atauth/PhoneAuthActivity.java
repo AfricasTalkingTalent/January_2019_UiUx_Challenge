@@ -1,13 +1,14 @@
 package com.job.atauth;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -20,6 +21,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.africastalking.AfricasTalking;
+import com.africastalking.models.sms.Recipient;
+import com.africastalking.services.SmsService;
+import com.africastalking.utils.Logger;
+
+import java.io.IOException;
+import java.net.ConnectException;
+import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,19 +77,21 @@ public class PhoneAuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_phone_auth);
         ButterKnife.bind(this);
 
+        connectToServer();
+
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        sharedPreferencesEditor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferencesEditor = getPreferences(MODE_PRIVATE).edit();
+        mSharedPreferences = getPreferences(MODE_PRIVATE);
 
 
         //auth set phone
         if (!checkPermission(wantPermission)) {
             requestPermission(wantPermission);
         } else {
-            if (getPhone() != null){
+            if (getPhone() != null) {
                 phNumber.getEditText().setText(getPhone());
             }
         }
@@ -159,7 +172,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
             if (validatePhone()) {
 
                 tweakUICodeIncoming();
-               showSnackbar("SMS sent" + " to : " + mPhoneNum);
+                showSnackbar("SMS sent" + " to : " + mPhoneNum);
                 startPhoneNumberVerification(mPhoneNum);
             }
         }
@@ -167,7 +180,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
         if (phContinue.getText().equals(VR)) {
             if (validateCode()) {
 
-                String code = phCode.getEditText().getText().toString().trim();
+                String code = mSharedPreferences.getString("TOKEN","");
 
                 if (mVerificationId != null) {
 
@@ -189,7 +202,8 @@ public class PhoneAuthActivity extends AppCompatActivity {
         } else {
             phNumber.setError(null);
             Log.d(TAG, "validatePhone: " + phone);
-            mPhoneNum = "+254" + phone;
+            //mPhoneNum = "+254" + phone;
+            mPhoneNum = phone;
         }
 
         return valid;
@@ -237,8 +251,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
     private void startPhoneNumberVerification(String phoneNumber) {
 
+        String message = generateAuthToken();
+        sharedPreferencesEditor.putString("TOKEN",message);
+        sendMessage(phoneNumber, message);
     }
-
 
 
     private void updateUI(int uiState, final SweetAlertDialog pDialog) {
@@ -315,11 +331,11 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
     }
 
-    private void requestPermission(String permission){
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+    private void requestPermission(String permission) {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
             Toast.makeText(this, "Phone state permission allows us to get phone number. Please allow it for additional functionality.", Toast.LENGTH_LONG).show();
         }
-        ActivityCompat.requestPermissions(this, new String[]{permission},PERMISSION_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{permission}, PERMISSION_REQUEST_CODE);
     }
 
     private String getPhone() {
@@ -330,10 +346,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
         return phoneMgr.getLine1Number();
     }
 
-    private boolean checkPermission(String permission){
+    private boolean checkPermission(String permission) {
         if (Build.VERSION.SDK_INT >= 23) {
             int result = ContextCompat.checkSelfPermission(this, permission);
-            if (result == PackageManager.PERMISSION_GRANTED){
+            if (result == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
                 return false;
@@ -352,11 +368,112 @@ public class PhoneAuthActivity extends AppCompatActivity {
     }
 
     private void showSnackbar(final String mainTextStringId, final String actionStringId,
-                             View.OnClickListener listener) {
+                              View.OnClickListener listener) {
         Snackbar.make(
                 findViewById(android.R.id.content),
                 mainTextStringId,
                 Snackbar.LENGTH_INDEFINITE)
                 .setAction(actionStringId, listener).show();
+    }
+
+    /*
+ Implementation of our sendMessage method
+  */
+    private void sendMessage(final String number, final String message) {
+
+        /*
+        get our sms service and use it to send the message
+         */
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, String, Void> smsTask = new AsyncTask<Void, String, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+
+                /*
+                put it in try catch block
+                 */
+                try {
+
+                    //Log this
+                    Log.e("SMS INFO", "Attempting to send SMS");
+
+                    //get the sms service
+                    SmsService smsService = AfricasTalking.getSmsService();
+
+                    //Send the sms, get the response
+                    List<Recipient> recipients = smsService.send(message, new String[]{number});
+
+                    /*
+                    Log the response
+                     */
+                    Log.e("SMS RESPONSE", recipients.get(0).messageId + " " + recipients.get(0).status);
+
+                    if (recipients.get(0).status.equals("Success")) {
+
+                    }
+
+                } catch (ConnectException e) {
+
+                    Log.e("Connection FAILURE", e.toString());
+                } catch (IOException e) {
+
+                    Log.e("SMS FAILURE", e.toString());
+                }
+
+                return null;
+            }
+        };
+
+        smsTask.execute();
+    }
+
+    // a four auth code
+    private String generateAuthToken() {
+        Random random = new Random();
+        StringBuilder authBuilder = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            int code = random.nextInt(4);
+            authBuilder.append(code);
+        }
+
+        return authBuilder.toString();
+    }
+
+    private void connectToServer() {
+
+        //Initialize te sdk, and connect to our server. Do this in a try catch block
+        try {
+
+            /*
+            Put a notice in our log that we are attempting to initialize
+             */
+            Log.e("NOTICE", "Attempting to initialize server");
+            //AfricasTalking.initialize(BuildConfig.RPC_HOST, BuildConfig.RPC_PORT, true);
+            String host = "192.168.8.100";
+            int port = 8080;
+            AfricasTalking.initialize(host, port, true);
+
+            //Use AT's Logger to get any message
+            AfricasTalking.setLogger(new Logger() {
+                @Override
+                public void log(String message, Object... args) {
+
+                    /*
+                    Log this too
+                     */
+                    Log.e("FROM AT LOGGER", message + " " + args.toString());
+                }
+            });
+
+            /*
+            Final log to tell us if successful
+             */
+            Log.e("SERVER SUCCESS", "Managed to connect to server");
+        } catch (IOException e) {
+
+            /*
+            Log our failure to connect
+             */
+            Log.e("SERVER ERROR", "Failed to connect to server");
+        }
     }
 }
