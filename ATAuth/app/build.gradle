@@ -4,6 +4,9 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -13,9 +16,18 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        //AT configs
         ndk {
             abiFilters "armeabi", "x86"
         }
+
+        buildConfigField 'String', 'PRODUCT_NAME', "\"" + properties.getProperty("api.productName") + "\""
+        buildConfigField 'String', 'API_KEY', "\"" + properties.getProperty("api.key") + "\""
+        buildConfigField 'String', 'USER_NAME', "\"" + properties.getProperty("api.username") + "\""
+        buildConfigField 'String', 'RPC_HOST', "\"" + properties.getProperty("rpcHost") + "\""
+        buildConfigField 'int', 'RPC_PORT', properties.getProperty("rpcPort")
+
     }
     buildTypes {
         release {
