@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">ATAuth</string>
+    <string name="or">Or</string>
+
+    <!--phone auth texts-->
+    <string name="phone">Phone number</string>
+    <string name="smscode">SMS CODE</string>
+    <string name="confirm">Confirm</string>
+    <string name="continue_txt">Continue</string>
+    <string name="enter_phonenumber">Enter Phonenumber</string>
+    <string name="resend_sms">Resend SMS</string>
+    <string name="enter_sms_code">Enter SMS Code</string>
+    <string name="status_code_sent">Sms Code Received</string>
+    <string name="status_verification_failed">Number verification failed</string>
+    <string name="instant_validation">Verification Success</string>
+    <string name="invalid_phone_num">Invalid phone number.</string>
+    <string name="content_decription">content desc</string>
 </resources>
