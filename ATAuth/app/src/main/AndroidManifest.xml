@@ -5,6 +5,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name=".PhoneAuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

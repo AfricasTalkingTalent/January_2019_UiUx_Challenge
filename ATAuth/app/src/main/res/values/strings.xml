@@ -7,6 +7,7 @@
     <string name="smscode">SMS CODE</string>
     <string name="confirm">Confirm</string>
     <string name="continue_txt">Continue</string>
+    <string name="verify_text">Verify</string>
     <string name="enter_phonenumber">Enter Phonenumber</string>
     <string name="resend_sms">Resend SMS</string>
     <string name="enter_sms_code">Enter SMS Code</string>
@@ -15,4 +16,5 @@
     <string name="instant_validation">Verification Success</string>
     <string name="invalid_phone_num">Invalid phone number.</string>
     <string name="content_decription">content desc</string>
+    <string name="retry">Retry</string>
 </resources>
