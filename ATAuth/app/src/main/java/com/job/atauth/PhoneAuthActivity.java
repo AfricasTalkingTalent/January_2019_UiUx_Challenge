@@ -85,8 +85,8 @@ public class PhoneAuthActivity extends AppCompatActivity {
             onRestoreInstanceState(savedInstanceState);
         }
 
-        sharedPreferencesEditor = getPreferences(MODE_PRIVATE).edit();
-        mSharedPreferences = getPreferences(MODE_PRIVATE);
+        sharedPreferencesEditor = getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE).edit();
+        mSharedPreferences = getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE);
 
 
         //auth set phone
@@ -174,7 +174,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
             if (validatePhone()) {
 
                 tweakUICodeIncoming();
-                sharedPreferencesEditor.putString("PHONE",mPhoneNum);
+
                 showSnackbar("SMS sent" + " to : " + mPhoneNum);
                 startPhoneNumberVerification(mPhoneNum);
             }
@@ -185,7 +185,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
                 String code = mSharedPreferences.getString("TOKEN","");
 
-                Toast.makeText(this, "Successfull", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Successful", Toast.LENGTH_SHORT).show();
                 sendUserToMainActivity();
             }
         }
@@ -252,8 +252,11 @@ public class PhoneAuthActivity extends AppCompatActivity {
     private void startPhoneNumberVerification(String phoneNumber) {
 
         String message = generateAuthToken();
-        phCode.getEditText().setText(message);
+        //phCode.getEditText().setText(message);
         sharedPreferencesEditor.putString("TOKEN",message);
+        sharedPreferencesEditor.putString("PHONE",mPhoneNum);
+        sharedPreferencesEditor.commit();
+
         sendMessage(phoneNumber, message);
         asyncTimerSimulator();
     }

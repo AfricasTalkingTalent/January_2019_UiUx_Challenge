@@ -28,9 +28,25 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.userinfo_layout);
         ButterKnife.bind(this);
 
-        mSharedPreferences = getPreferences(MODE_PRIVATE);
+        mSharedPreferences = getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE);
 
         loadUI();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //check for ull user
+        String user = mSharedPreferences.getString("PHONE","");
+
+        if (user.isEmpty()){
+
+            Intent main = new Intent(this, PhoneAuthActivity.class);
+            main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(main);
+            finish();
+        }
     }
 
     private void loadUI() {
@@ -46,6 +62,9 @@ public class HomeActivity extends AppCompatActivity {
         Intent main = new Intent(this, PhoneAuthActivity.class);
         main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(main);
+
+        getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE).edit().putString("PHONE","");
+        getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE).edit().apply();
         finish();
     }
 }

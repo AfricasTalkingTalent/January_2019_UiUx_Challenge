@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon"
         >
-        <activity android:name=".MainActivity">
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,7 +29,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <activity android:name=".PhoneAuthActivity"/>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

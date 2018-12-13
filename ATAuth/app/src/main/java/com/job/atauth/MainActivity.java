@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        sharedPreferencesEditor = getPreferences(MODE_PRIVATE).edit();
+        sharedPreferencesEditor = getSharedPreferences(getApplication().getPackageName(),MODE_PRIVATE).edit();
     }
 
     @OnClick(R.id.ph_continue) void onPhContinueClick() {
