@@ -7,6 +7,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 bootstrap = Bootstrap()
 
+# intiating database
+db = SQLAlchemy()
+
 
 def create_app(config_name):
 
@@ -20,9 +23,6 @@ def create_app(config_name):
     app.config.from_object(config_options[config_name])
 
     # app.config.from_pyfile('config.py')
-
-    # intiating database
-    db = SQLAlchemy()
 
     # Initializing db
     db.init_app(app)
