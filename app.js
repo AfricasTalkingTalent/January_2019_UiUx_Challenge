@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 
 const options = {
     apiKey: '47559095d486028e154d6fb8739c88a9b07275b54b35080b9020d439d67ba670',  // use your sandbox app API key for development in the test environment
-    username: 'samuelbarasa',      // use 'sandbox' for development in the test environment
+    username: 'sandbox',      // use 'sandbox' for development in the test environment
 };
 const AfricasTalking = require('africastalking')(options);
 
@@ -32,10 +32,10 @@ function randomInRange(from, to) {
     var r = Math.random();
     return Math.floor(r * (to - from) + from);
 }
-
+var verify = randomInRange()
 app.post('/', function(request, response){
     // Use the service
-    const moses = {
+    const moses = {    //moses is just an example
         to:  request.body.phone,
         message: `Your verification code is : ${randomInRange(1,10000)}`
     }
@@ -44,7 +44,6 @@ app.post('/', function(request, response){
         .then( res => {
             console.log(res);
             response.sendStatus(200);
-           
         })
         .catch( error => {
             console.log(error);
@@ -53,12 +52,11 @@ app.post('/', function(request, response){
     response.redirect('/verify');
 });
 app.post('/verify', function(request, response){
-    var verificationCode = req.body.verification;
-    if (verificationCode === randomInRange()) {
-        response.sendStatus(200);
-        response.redirect('/');
+    var verificationCode = request.body.verification;
+    if (verificationCode === verify) {
+        response.statusCode(200);
     }else {
-        response.sendStatus(500);
+        response.redirect('/');
     }
 });
 
