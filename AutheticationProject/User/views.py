@@ -8,6 +8,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 import uuid
 from .models import User
+import africastalking
+from random import randint
 
 
 @api_view(['GET'])
@@ -45,4 +47,53 @@ def process_signup_data(request):
             "phone_number": phone_number,
         }
     )
+
     return Response(status=status.HTTP_201_CREATED)
+
+
+def send_sms_verification(phone_number: str)->None:
+    """sends an sms to the user to verify phone number"""
+    username = "healthixAndroid"
+    apikey = "04c322dfb5bf4b3b00414d55eb56f640389b8cb9e10226e9567c81bc086d5362"
+
+    sms = africastalking.SMS
+    verification_code = "231423"
+    response = sms.send(
+        "Hello, please send the code to complete your signup {}".format(verification_code), [phone_number])
+    print(response)
+
+#using at service synchronously
+
+
+# def on_finish(error, response):
+#     if error is not None:
+#         raise error
+#     print(response)
+
+
+# sms.send(
+#     "Hello, please send the code to complete your signup {}".format(verification_code), [phone_number])
+
+def generate_verification_code()->str:
+    """Returns a four digit verification code"""
+    verification_code = randint(10**3, ((10**4) - 1))
+    return str(verification_code)
+
+
+@api_view(['POST'])
+@permission_classes((AllowAny, ))
+@parser_classes((MultiPartParser, FormParser))
+def process_verification(request):
+    """Verifies the code sent to a user"""
+    data = request.data
+    email = data["email"]
+    code = data["cod"]
+    user = None
+    try:
+        user = User.objects.get(email_address = email)
+    except:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    if user.verification == code:
+        user.active = "True"
+        user.save()
+    return Response(status=status.HTTP_202_ACCEPTED)
