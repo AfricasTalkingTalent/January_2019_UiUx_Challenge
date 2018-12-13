@@ -61,11 +61,11 @@ def token():
         password = session.get('password')
         token_ori = session.get('token')
         if token == token_ori:
-            user = User(phone_no=phone_number,
-                        username=username, password=password)
-            db.session.add(user)
-            db.session.commit()
-        return Response("<h1>Success!</h1>")
+            # user = User(phone_no=phone_number,
+            #             username=username, password=password)
+            # db.session.add(user)
+            # db.session.commit()
+            return Response("<h1>Success!</h1>")
     return render_template('token.html', tform=tform)
 
 
