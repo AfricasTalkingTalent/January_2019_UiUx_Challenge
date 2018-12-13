@@ -1,6 +1,7 @@
 package com.job.atauth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -27,16 +28,25 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.textView)
     TextView textView;
 
+    private SharedPreferences.Editor sharedPreferencesEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        sharedPreferencesEditor = getPreferences(MODE_PRIVATE).edit();
     }
 
     @OnClick(R.id.ph_continue) void onPhContinueClick() {
         if (validateCode()){
+
+            //saving data in DB
+            String username = phUsername.getEditText().getText().toString();
+            sharedPreferencesEditor.putString("USER",username);
+            sharedPreferencesEditor.apply();
+
             sendToHomeActivity();
         }
     }

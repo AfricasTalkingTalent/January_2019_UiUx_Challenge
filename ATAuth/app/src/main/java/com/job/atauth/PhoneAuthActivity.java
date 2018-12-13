@@ -6,9 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -172,6 +174,7 @@ public class PhoneAuthActivity extends AppCompatActivity {
             if (validatePhone()) {
 
                 tweakUICodeIncoming();
+                sharedPreferencesEditor.putString("PHONE",mPhoneNum);
                 showSnackbar("SMS sent" + " to : " + mPhoneNum);
                 startPhoneNumberVerification(mPhoneNum);
             }
@@ -182,13 +185,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
 
                 String code = mSharedPreferences.getString("TOKEN","");
 
-                if (mVerificationId != null) {
-
-                    //verifyPhoneNumberWithCode(mVerificationId, code);
-                }
+                Toast.makeText(this, "Successfull", Toast.LENGTH_SHORT).show();
+                sendUserToMainActivity();
             }
         }
-
     }
 
     private boolean validatePhone() {
@@ -252,8 +252,10 @@ public class PhoneAuthActivity extends AppCompatActivity {
     private void startPhoneNumberVerification(String phoneNumber) {
 
         String message = generateAuthToken();
+        phCode.getEditText().setText(message);
         sharedPreferencesEditor.putString("TOKEN",message);
         sendMessage(phoneNumber, message);
+        asyncTimerSimulator();
     }
 
 
@@ -475,5 +477,40 @@ public class PhoneAuthActivity extends AppCompatActivity {
              */
             Log.e("SERVER ERROR", "Failed to connect to server");
         }
+    }
+
+    /*
+    * Simulating SMS response time
+    * RESEND SMS logic on failure
+    * */
+    private void asyncTimerSimulator(){
+
+        final SweetAlertDialog pDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#FF5521"));
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new CountDownTimer(10000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                String timer = (Util.toMinutes(millisUntilFinished) +" : " + Util.toSec(millisUntilFinished));
+                pDialog.setTitleText("Waiting SMS confirmation");
+                pDialog.setContentText(""+timer);
+
+            }
+
+            public void onFinish() {
+                //done
+                pDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                pDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog stDialog) {
+                        stDialog.dismissWithAnimation();
+                        String code = mSharedPreferences.getString("TOKEN","");
+                        phCode.getEditText().setText(code);
+                    }
+                });
+            }
+        }.start();
     }
 }
