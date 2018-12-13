@@ -1,0 +1,34 @@
+{
+  "name": "january_2019_uiux_challenge",
+  "version": "1.0.0",
+  "description": "Implement 2 factor authentication (using SMS) on a sign up page",
+  "main": "app.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domanisamuel/January_2019_UiUx_Challenge.git"
+  },
+  "keywords": [
+    "express",
+    "router",
+    "mongo",
+    "body-parser"
+  ],
+  "author": "domanisamuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/domanisamuel/January_2019_UiUx_Challenge/issues"
+  },
+  "homepage": "https://github.com/domanisamuel/January_2019_UiUx_Challenge#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "logger": "0.0.1",
+    "mongoose": "^5.3.16",
+    "morgan": "^1.9.1",
+    "path": "^0.12.7",
+    "router": "^1.3.3"
+  }
+}

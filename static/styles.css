@@ -1,0 +1,63 @@
+/*preventing overflow*/
+html{overflow-x: hidden !important;}
+@media only screen and (max-device-width:736px){html,body{overflow-x: hidden !important;}}
+body{
+    margin: 0%;
+    font-family: 'Lato', sans-serif;
+}
+.header{
+    height: 70px;
+    margin: 0%;
+    width: 100%;
+    position: fixed;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+.logo{
+    height: 50px;
+    margin-left: 10%;
+    padding-top: 10px;
+}
+.wrapper {
+    padding-top: 100px;
+}
+.form {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px #cccccc solid;
+    max-width: 400px !important;
+    border-radius: 5px;
+    margin-left: 30%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+label {
+    font-weight: bold;
+}
+
+input[type=text], input[type=number], input[type=email],input[type=password] {
+    background-color: transparent;
+    border: 1px #cccccc solid;
+    width: 90%;
+    height: 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: auto;
+    text-align: center;
+    font-size: 16px;
+}
+input[type=submit]{
+    border: none;
+    color: white;
+    background-color: rgba(44,150,63,.9);
+    padding: 16px 40px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 30px;
+    font-size: 16px;
+}
+
+@media only screen and (max-device-width:1020px){
+    .form {max-width: 400px !important; margin: 0% !important; margin: 0%;}
+}
