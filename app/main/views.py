@@ -24,7 +24,7 @@ def send_token(name, phone_number, token):
     '''
     sends token to phone
     '''
-    message = f"Thank {name} please confirm account with {token}."
+    message = f"Thank you {name} please confirm your account with {token}."
 
     responds = send_sms(message, phone_number)
     print(responds)
@@ -65,11 +65,11 @@ def token():
             #             username=username, password=password)
             # db.session.add(user)
             # db.session.commit()
-            return Response("<h1>Success!</h1>")
+            return redirect(url_for("main.success"))
     return render_template('token.html', tform=tform)
 
 
-# @main.route('/')
-# def index():
+@main.route('/success')
+def success():
 
-#     return render_template('index.html')
+    return render_template('success.html')
