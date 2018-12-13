@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{vue_routes?}', function () {
+    return view('signup');
+})->where('vue_routes', '[\/\w\.-]*');
