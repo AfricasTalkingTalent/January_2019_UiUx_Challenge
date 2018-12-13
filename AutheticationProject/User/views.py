@@ -47,17 +47,18 @@ def process_signup_data(request):
             "phone_number": phone_number,
         }
     )
-    send_sms_verification(user.phone_number)
+    user.verification = generate_verification_code()
+    user.save()
+    send_sms_verification(user.phone_number, user.verification)
     return Response(status=status.HTTP_201_CREATED)
 
 
-def send_sms_verification(phone_number: str)->None:
+def send_sms_verification(phone_number: str, verification_code: str)->None:
     """sends an sms to the user to verify phone number"""
     username = "healthixAndroid"
-    apikey = "04c322dfb5bf4b3b00414d55eb56f640389b8cb9e10226e9567c81bc086d5362"
+    api_key = "04c322dfb5bf4b3b00414d55eb56f640389b8cb9e10226e9567c81bc086d5362"
     africastalking.initialize(username, api_key)
     sms = africastalking.SMS
-    verification_code = generate_verification_code()
     response = sms.send(
         "Hello, please send the code to complete your signup {}".format(verification_code), [phone_number])
     print(response)
