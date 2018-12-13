@@ -17,12 +17,32 @@
   <div class="backLeft"></div>
 </div>
 
+<style>
+  #error-message{
+    position: absolute;
+    top: 10%;
+    left: 25%;
+    padding: 1em;
+    background: rgba(250,100,100,.9);
+    z-index: 1;
+    border-radius: 5px;
+    min-width: 50%;
+    text-align: center;
+  }
+</style>
+
+{% if error %}
+<div id="error-message" >
+    Registration unsuccessful, please try again...    
+</div>
+{% endif %}
+
 <div id="slideBox">
   <div class="topLayer">
     <div class="left">
       <div class="content">
         <h2>Sign Up</h2>
-        <form method="post" action="verify">
+        <form method="post" action="/">
           <div class="form-group">
             <input id="name" type="text" name="name" placeholder="John Doe" required />
             <input id="number" type="text" name="number" placeholder="+254 712 345678" required />

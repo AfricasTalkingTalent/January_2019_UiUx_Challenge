@@ -2,7 +2,7 @@ import sys
 import config
 import json
 
-from flask import Flask, render_template, request, make_response, jsonify, redirect
+from flask import Flask, render_template, request, make_response, jsonify, redirect, url_for, flash, session
 
 # import crud;
 import utils;
@@ -11,9 +11,36 @@ app = Flask(__name__)
 app.config.from_object('config')
 app.config.from_pyfile('config.py')
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def index():
-	return render_template('index.html')
+	error = None
+
+	if request.method == 'POST':
+		req = request.form
+		num = utils.numberFormatter(req['number'])
+
+		verification = verifyCode(num, req['code'])
+
+		if verification:
+			verified = verifiedUser(num)
+			print(verified)
+
+			resp = jsonify(success=True, message="Successful Registration")
+			resp.status_code = 200
+
+			# return resp
+			return render_template('success.html', user = verified)
+			# return redirect('/', code=200)
+		else:
+			deleteUserAndVerification(num)
+			resp = jsonify(success=False, message="Registration failed")
+			resp.status_code = 404
+			error = 'Invalid credentials'
+			# flash(error)
+
+	return render_template('index.html', error=error)
+
+
 
 @app.route("/sendOTP", methods=['POST'])
 def sendOTP():
@@ -47,8 +74,6 @@ def verify():
 
 	verification = verifyCode(num, req['code'])
 
-	# return jsonify(verification)
-
 	if verification:
 		verified = verifiedUser(num)
 		print(verified)
@@ -56,13 +81,14 @@ def verify():
 		resp = jsonify(success=True, message="Successful Registration")
 		resp.status_code = 200
 
-		return resp
+		# return resp
+		return render_template('success.html', user = verified)
 		# return redirect('/', code=200)
 	else:
 		resp = jsonify(success=False, message="Registration failed")
 		resp.status_code = 404
 
-		return resp
+		return redirect(url_for('index'), code=404)
 		# return redirect('/', code=404)
 	# return resp
 	# return verification_schema.jsonify(verification)
@@ -147,7 +173,7 @@ def verifiedUser(number):
 
 	db.session.commit()
 
-	return user_schema.jsonify(user)
+	return json.loads(user_schema.dumps(user).data)
 
 def verifyCode(number, code):
 	number = number;
@@ -168,11 +194,23 @@ def verifyCode(number, code):
 
 	if int(code) == data['code']:
 		db.session.delete(verification)
-		db.session.commit
+		db.session.commit()
 		return True
 
 	return False
 
+def deleteUserAndVerification(number):
+	user = User.query.filter_by(number=number).first()
+	verification = Verification.query.filter_by(number=number).first()
+
+	print(user)
+	print(verification)
+
+	db.session.delete(user)
+	db.session.delete(verification)
+	db.session.commit()
+
+	return True
 ### __ END CRUD FUNCTIONS ###
 
 
@@ -218,4 +256,6 @@ if __name__ == '__main__':
 	# else:
 	# 	raise ValueError('Invalid environment name')
 
-	app.run(debug = True)
+    # app.debug = True
+
+	app.run()
