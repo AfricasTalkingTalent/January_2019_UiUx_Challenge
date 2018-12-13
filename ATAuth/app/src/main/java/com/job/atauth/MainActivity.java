@@ -2,33 +2,75 @@ package com.job.atauth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.africastalking.AfricasTalking;
 import com.africastalking.utils.Logger;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 /**
  * Created by Job on Wednesday : 12/12/2018.
  */
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.ph_username)
+    TextInputLayout phUsername;
+    @BindView(R.id.ph_password) TextInputLayout phPassword;
+    @BindView(R.id.textView)
+    TextView textView;
+
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
-        //connectToServer();
-        startActivity(new Intent(this,PhoneAuthActivity.class));
     }
 
+    @OnClick(R.id.ph_continue) void onPhContinueClick() {
+        if (validateCode()){
+            sendToHomeActivity();
+        }
+    }
 
-    /*
-    implementation of connectToServer()
-     */
+    private void sendToHomeActivity() {
+        Intent main = new Intent(this, HomeActivity.class);
+        main.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(main);
+        finish();
+    }
+
+    private boolean validateCode() {
+        boolean valid = true;
+
+        String username = phUsername.getEditText().getText().toString();
+        String pss = phPassword.getEditText().getText().toString();
+
+        if (username.isEmpty()) {
+            phUsername.setError("invalid username");
+            valid = false;
+        } else {
+            phUsername.setError(null);
+        }
+
+        if (pss.isEmpty()) {
+            phPassword.setError("invalid password");
+            valid = false;
+        } else {
+            phPassword.setError(null);
+        }
+
+        return valid;
+    }
+
     private void connectToServer() {
 
         //Initialize te sdk, and connect to our server. Do this in a try catch block
