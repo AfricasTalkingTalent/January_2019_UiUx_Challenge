@@ -1,6 +1,6 @@
 
-#2factor authentication
-##UI/UX Challenge
+# 2factor authentication
+## UI/UX Challenge
 
 ``` bash
 #clone this repository to your local
