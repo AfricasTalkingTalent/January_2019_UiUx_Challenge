@@ -7,6 +7,7 @@
 <body>
 	
 <?php
+session_start();
 //connect to the db
 require "DBConnect.php";
 global $db;
@@ -76,7 +77,7 @@ $token = crypt($code, $key);
 
             if ($result) {
 
-                session_start();
+
                 $_SESSION['yes'] = $uname;
 
                 //show verification sent message
@@ -91,7 +92,7 @@ $token = crypt($code, $key);
                     });
                     setTimeout(function () {
                         location.href = "index.php"
-                    }, 1000);
+                    }, 50);
                 </script>
                 <?php
             }
@@ -99,9 +100,10 @@ $token = crypt($code, $key);
         }
 
         }
+
     }
 
-    
+
 
 
 
