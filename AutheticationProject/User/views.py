@@ -93,3 +93,7 @@ def process_verification(request):
 
 def load_login_page(request):
     return render(request, 'signup.html')
+
+
+def verify_user(request):
+    return render(request, 'verify.html')

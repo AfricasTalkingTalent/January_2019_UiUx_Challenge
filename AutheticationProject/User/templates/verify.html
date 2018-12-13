@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Stack | Verify</title>
+    {% load static %}
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <nav class="nav">
+        <a href="" class="title">Brian-STackoverflow-Lite</a>
+        <a href="http://127.0.0.1:8000/home" class="right">LOGIN</a>
+    </nav>
+    <form-container class="content form-container">
+        <form action="">
+            <label for="first-name" class="input-label">Enter Vefificatio Code:</label>
+            <input type="text" class="input-field"><br><br>
+            <input type="button" value="Submit" class="button" style="width:100%" onclick="window.location.href='http://127.0.0.1:8000/verify-user'">
+        </form>
+    </form-container>
+    <footer>
+        <p>&copy;Brian-stackoverflow-lite 2018</p>
+    </footer>
+</body>
+
+</html>
