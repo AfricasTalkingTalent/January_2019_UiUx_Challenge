@@ -23,6 +23,9 @@ $(document).ready(function(){
         });
     }
   });
+
+  $('#verify').on('click', )
+
 });
 
 function verifyName() {
@@ -86,7 +89,7 @@ function sendAjax() {
       'password': $('#password').val(),
     }),  
     dataType: 'json',
-    url: '/verify',
+    url: '/sendOTP',
     success: function (data) {
       // console.log(data)
     },

@@ -1,10 +1,11 @@
 import sys
 import config
+import json
 
-from flask import Flask, render_template, request, make_response, jsonify
+from flask import Flask, render_template, request, make_response, jsonify, redirect
 
 # import crud;
-import utils as cG;
+import utils;
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -14,13 +15,13 @@ app.config.from_pyfile('config.py')
 def index():
 	return render_template('index.html')
 
-@app.route("/verify", methods=['POST'])
-def verify():
+@app.route("/sendOTP", methods=['POST'])
+def sendOTP():
 	req = request.json;
 	# print(req['name'])
 	if req != None or req != "":
-		code = cG.generateCode()
-		number = cG.numberFormatter(req['number'])
+		code = utils.generateCode()
+		number = utils.numberFormatter(req['number'])
 
 		if number is None:
 			resp = jsonify(success=False, req=request.json, message="Number is not valid")
@@ -38,6 +39,33 @@ def verify():
 		resp.status_code = 404
 		
 	return resp
+
+@app.route("/verify", methods=['POST'])
+def verify():
+	req = request.form
+	num = utils.numberFormatter(req['number'])
+
+	verification = verifyCode(num, req['code'])
+
+	# return jsonify(verification)
+
+	if verification:
+		verified = verifiedUser(num)
+		print(verified)
+
+		resp = jsonify(success=True, message="Successful Registration")
+		resp.status_code = 200
+
+		return resp
+		# return redirect('/', code=200)
+	else:
+		resp = jsonify(success=False, message="Registration failed")
+		resp.status_code = 404
+
+		return resp
+		# return redirect('/', code=404)
+	# return resp
+	# return verification_schema.jsonify(verification)
 
 
 ### CRUD FUNCTIONS ###
@@ -57,7 +85,7 @@ class User(db.Model):
 	"""docstring for User"""
 	# id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	number = db.Column(db.Integer, unique=True, primary_key=True)
+	number = db.Column(db.String(15), unique=True, primary_key=True)
 	password = db.Column(db.String(190))
 	verified = db.Column(db.Boolean, default=False)
 
@@ -79,7 +107,7 @@ users_schema = UserSchema(many=True)
 class Verification(db.Model):
 	"""docstring for Verification"""
 	id = db.Column(db.Integer, primary_key=True)
-	number = db.Column(db.Integer)
+	number = db.Column(db.String(15))
 	code = db.Column(db.Integer)
 	expiryDate = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
@@ -92,7 +120,9 @@ class VerificationSchema(ma.Schema):
 	"""docstring for VerificationSchema"""
 	class Meta:
 		fields = ('number', 'code', 'expiryDate')
-		
+
+verification_schema = VerificationSchema()
+verifications_schema = VerificationSchema(many=True)
 
 def add_user(name, number, password, code):
     name = name;
@@ -112,7 +142,7 @@ def add_user(name, number, password, code):
     return user_schema.jsonify(new_user)
 
 def verifiedUser(number):
-	user = User.query.get(number)
+	user = User.query.filter_by(number=number).first()
 	user.verified = True
 
 	db.session.commit()
@@ -123,12 +153,25 @@ def verifyCode(number, code):
 	number = number;
 	code = code;
 
-	verification = Verification.query.get(number)
-	data = VerificationSchema.jsonify(verification)
+	# verification = Verification.query.all()
+	# verification = Verification.query.get(number)
+	verification = Verification.query.filter_by(number=number).order_by('-id')[0]
 
-	if code == data.code:
-		return true
+	# return verification_schema.jsonify(verification);
 
+	# print(verifications_schema.jsonify(verification));
+
+	data = json.loads(verification_schema.dumps(verification).data)
+
+	# # return data
+	# return {'code': int(code), 'data': data['code']}
+
+	if int(code) == data['code']:
+		db.session.delete(verification)
+		db.session.commit
+		return True
+
+	return False
 
 ### __ END CRUD FUNCTIONS ###
 
@@ -151,7 +194,7 @@ class SMS:
 
 	def send_sms_sync(self, number, code):
 		recipients = [number]
-		message = str(code) + " is your Africastalking verfication code"
+		message = str(code) + " is your Africastalking verification code"
 
 		try:
 			response = self.sms.send(message, recipients)
