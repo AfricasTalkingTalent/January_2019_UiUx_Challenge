@@ -31,21 +31,21 @@ def send_token(name, phone_number, token):
     return responds
 
 
-@main.route('/register', methods=["GET", "POST"])
+@main.route('/', methods=["GET", "POST"])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         phone_number = form.phone_no.data
         username = form.username.data
-        # password = form.password.data
+        password = form.password.data
 
         token = generate_token()
         send_token(username, phone_number, token)
 
-        # session['phone_number'] = phone_number
-        # session['username'] = username
-        # session['password'] = password
-        # session['token'] = token
+        session['phone_number'] = phone_number
+        session['username'] = username
+        session['password'] = password
+        session['token'] = token
         print(phone_number)
         return redirect(url_for("main.token"))
     return render_template('register.html', reg_form=form)
@@ -56,16 +56,20 @@ def token():
     tform = TokenForm()
     if tform.validate_on_submit():
         token = tform.token.data
-        # phone_number = session('phone_number')
-        # username = session('username')
-        # password = session('password')
-        # token_ori = session('token')
+        phone_number = session.get('phone_number')
+        username = session.get('username')
+        password = session.get('password')
+        token_ori = session.get('token')
         if token == token_ori:
-            print('great')
+            user = User(phone_no=phone_number,
+                        username=username, password=password)
+            db.session.add(user)
+            db.session.commit()
+        return Response("<h1>Success!</h1>")
     return render_template('token.html', tform=tform)
 
 
-@main.route('/')
-def index():
+# @main.route('/')
+# def index():
 
-    return render_template('index.html')
+#     return render_template('index.html')
