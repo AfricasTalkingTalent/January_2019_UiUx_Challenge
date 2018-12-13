@@ -4,7 +4,6 @@ import json
 
 from flask import Flask, render_template, request, make_response, jsonify, redirect, url_for, flash, session
 
-# import crud;
 import utils;
 
 app = Flask(__name__)
@@ -14,6 +13,7 @@ app.config.from_pyfile('config.py')
 @app.route("/", methods=['GET', 'POST'])
 def index():
 	error = None
+	user = None
 
 	if request.method == 'POST':
 		req = request.form
@@ -25,21 +25,25 @@ def index():
 			verified = verifiedUser(num)
 			print(verified)
 
-			resp = jsonify(success=True, message="Successful Registration")
-			resp.status_code = 200
+			# resp = jsonify(success=True, message="Successful Registration")
+			# resp.status_code = 200
 
 			# return resp
 			return render_template('success.html', user = verified)
 			# return redirect('/', code=200)
 		else:
-			deleteUserAndVerification(num)
-			resp = jsonify(success=False, message="Registration failed")
-			resp.status_code = 404
+			deleteVerification(num)
+			# resp = jsonify(success=False, message="Registration failed")
+			# resp.status_code = 404
 			error = 'Invalid credentials'
+			user = {
+				'name': req['name'],
+				'number': num,
+				}
+			# print(user)
 			# flash(error)
 
-	return render_template('index.html', error=error)
-
+	return render_template('index.html', error = error, user = user)
 
 
 @app.route("/sendOTP", methods=['POST'])
@@ -55,7 +59,7 @@ def sendOTP():
 			resp.status_code = 404
 			return resp
 
-		user = add_user(req['name'], number, req['password'], code)
+		checkForUserAndAdd(req['name'], number, req['password'], code)
 
 		SMS().send_sms_sync(number, code)
 
@@ -66,32 +70,6 @@ def sendOTP():
 		resp.status_code = 404
 		
 	return resp
-
-@app.route("/verify", methods=['POST'])
-def verify():
-	req = request.form
-	num = utils.numberFormatter(req['number'])
-
-	verification = verifyCode(num, req['code'])
-
-	if verification:
-		verified = verifiedUser(num)
-		print(verified)
-
-		resp = jsonify(success=True, message="Successful Registration")
-		resp.status_code = 200
-
-		# return resp
-		return render_template('success.html', user = verified)
-		# return redirect('/', code=200)
-	else:
-		resp = jsonify(success=False, message="Registration failed")
-		resp.status_code = 404
-
-		return redirect(url_for('index'), code=404)
-		# return redirect('/', code=404)
-	# return resp
-	# return verification_schema.jsonify(verification)
 
 
 ### CRUD FUNCTIONS ###
@@ -111,7 +89,7 @@ class User(db.Model):
 	"""docstring for User"""
 	# id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
-	number = db.Column(db.String(15), unique=True, primary_key=True)
+	number = db.Column(db.String(15), primary_key=True)
 	password = db.Column(db.String(190))
 	verified = db.Column(db.Boolean, default=False)
 
@@ -165,7 +143,26 @@ def add_user(name, number, password, code):
     db.session.add(new_verification)
     db.session.commit()
 
-    return user_schema.jsonify(new_user)
+    return new_user
+
+def checkForUserAndAdd(name, number, password, code):
+	user = User.query.filter_by(number=number).first()
+
+	if user is None:
+		user = add_user(name, number, password, code)
+	else:
+		user.name = name
+		user.number = number
+		user.password = password
+		db.session.commit()
+
+		new_verification = Verification(number, code)
+
+		db.session.add(new_verification)
+		db.session.commit()
+
+	return user_schema.jsonify(user)
+
 
 def verifiedUser(number):
 	user = User.query.filter_by(number=number).first()
@@ -199,18 +196,17 @@ def verifyCode(number, code):
 
 	return False
 
-def deleteUserAndVerification(number):
-	user = User.query.filter_by(number=number).first()
+def deleteVerification(number):
+	# user = User.query.filter_by(number=number).first()
 	verification = Verification.query.filter_by(number=number).first()
 
-	print(user)
-	print(verification)
-
-	db.session.delete(user)
+	# db.session.delete(user)
 	db.session.delete(verification)
 	db.session.commit()
 
 	return True
+
+
 ### __ END CRUD FUNCTIONS ###
 
 

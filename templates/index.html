@@ -44,8 +44,13 @@
         <h2>Sign Up</h2>
         <form method="post" action="/">
           <div class="form-group">
-            <input id="name" type="text" name="name" placeholder="John Doe" required />
-            <input id="number" type="text" name="number" placeholder="+254 712 345678" required />
+            {% if user %}
+              <input id="name" type="text" name="name" placeholder="John Doe" required value="{{user.name}}"  />
+              <input id="number" type="text" name="number" placeholder="+254 712 345678" required value="{{user.number}}"/>
+            {% else %}
+              <input id="name" type="text" name="name" placeholder="John Doe" required  value="{{user.name}}"  />
+              <input id="number" type="text" name="number" placeholder="+254 712 345678" required />
+            {% endif %}
             <input id="password" type="password" name="password" placeholder="password" required />
             <input id="password-confirm" type="password" name="password-confirm" placeholder="confirm password" required />
           </div>
