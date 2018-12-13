@@ -4,7 +4,7 @@ import config
 from flask import Flask, render_template, request, make_response, jsonify
 
 # import crud;
-import codeGenerator as cG;
+import utils as cG;
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -17,10 +17,19 @@ def index():
 @app.route("/verify", methods=['POST'])
 def verify():
 	req = request.json;
-	print(req['name'])
+	# print(req['name'])
 	if req != None or req != "":
+		code = cG.generateCode()
+		number = cG.numberFormatter(req['number'])
 
-		user = add_user(req['name'], req['number'], req['password'], cG.generateCode())
+		if number is None:
+			resp = jsonify(success=False, req=request.json, message="Number is not valid")
+			resp.status_code = 404
+			return resp
+
+		user = add_user(req['name'], number, req['password'], code)
+
+		SMS().send_sms_sync(number, code)
 
 		resp = jsonify(success=True, req=req)
 		resp.status_code = 200
@@ -70,7 +79,7 @@ users_schema = UserSchema(many=True)
 class Verification(db.Model):
 	"""docstring for Verification"""
 	id = db.Column(db.Integer, primary_key=True)
-	number = db.Column(db.String(32))
+	number = db.Column(db.Integer)
 	code = db.Column(db.Integer)
 	expiryDate = db.Column(db.DateTime, default=datetime.datetime.utcnow)
 
@@ -122,6 +131,38 @@ def verifyCode(number, code):
 
 
 ### __ END CRUD FUNCTIONS ###
+
+
+
+### AFRICASTALKING FUNCTIONS ###
+
+# from __future__ import print_function
+import africastalking
+
+class SMS:
+	"""docstring for SMS"""
+	def __init__(self):
+		self.username = app.config['AS_USERNAME']
+		self.api_key = app.config['AS_API_KEY']
+
+		africastalking.initialize(self.username, self.api_key)
+
+		self.sms = africastalking.SMS
+
+	def send_sms_sync(self, number, code):
+		recipients = [number]
+		message = str(code) + " is your Africastalking verfication code"
+
+		try:
+			response = self.sms.send(message, recipients)
+			print(response)
+		except Exception as e:
+			print('Encountered an error while sending: %s' % str(e))
+			# raise e
+
+		
+
+### __ END AFRICASTALKING FUNCTIONS ###
 
 
 if __name__ == '__main__':

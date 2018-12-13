@@ -77,7 +77,7 @@ function verifyPassword() {
 function sendAjax() {
 
   return $.ajax({
-    async: false,
+    // async: false,
     type: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({
@@ -91,6 +91,7 @@ function sendAjax() {
       // console.log(data)
     },
     error: function (request, status, error) {
+      console.log(request.responseText)
       console.log("Status: " + status);
       console.log("Error: " + error);
     },
