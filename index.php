@@ -312,4 +312,8 @@ switch (ENVIRONMENT)
  *
  * And away we go...
  */
+
+//  Added line for composer
+include_once './vendor/autoload.php';
+
 require_once BASEPATH.'core/CodeIgniter.php';

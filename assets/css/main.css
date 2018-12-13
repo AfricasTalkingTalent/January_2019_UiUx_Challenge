@@ -1,0 +1,39 @@
+/* Large sized devices */
+.wrapper {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.wrapper .right {
+    flex:2;
+}
+
+.wrapper .left {
+    flex:3;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../img/bg_building.jpg') no-repeat center center fixed;
+    background-size: cover;    
+}
+
+
+/* Meduim devices*/
+@media(max-width:992px){
+    .wrapper .right {
+        flex:1;
+    }
+
+    .wrapper .left {
+        flex:1;
+    }
+}
+
+/* Mobile devices */
+@media(max-width:576px){
+    .wrapper {
+        height: auto;
+    }
+
+    .wrapper {
+        flex-direction: column;
+    }
+
+}
