@@ -1,0 +1,6 @@
+APP_NAME = 'Africastalking 2FA'
+
+SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite3'
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+DEBUG = True
