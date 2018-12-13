@@ -47,7 +47,7 @@ def process_signup_data(request):
             "phone_number": phone_number,
         }
     )
-
+    send_sms_verification(user.phone_number)
     return Response(status=status.HTTP_201_CREATED)
 
 
@@ -57,22 +57,11 @@ def send_sms_verification(phone_number: str)->None:
     apikey = "04c322dfb5bf4b3b00414d55eb56f640389b8cb9e10226e9567c81bc086d5362"
 
     sms = africastalking.SMS
-    verification_code = "231423"
+    verification_code = generate_verification_code()
     response = sms.send(
         "Hello, please send the code to complete your signup {}".format(verification_code), [phone_number])
     print(response)
 
-#using at service synchronously
-
-
-# def on_finish(error, response):
-#     if error is not None:
-#         raise error
-#     print(response)
-
-
-# sms.send(
-#     "Hello, please send the code to complete your signup {}".format(verification_code), [phone_number])
 
 def generate_verification_code()->str:
     """Returns a four digit verification code"""
@@ -81,8 +70,6 @@ def generate_verification_code()->str:
 
 
 @api_view(['POST'])
-@permission_classes((AllowAny, ))
-@parser_classes((MultiPartParser, FormParser))
 def process_verification(request):
     """Verifies the code sent to a user"""
     data = request.data
@@ -90,10 +77,12 @@ def process_verification(request):
     code = data["cod"]
     user = None
     try:
-        user = User.objects.get(email_address = email)
+        user = User.objects.get(email_address=email)
     except:
+        print("User not found")
         return Response(status=status.HTTP_404_NOT_FOUND)
-    if user.verification == code:
+    if user.verificaton == code:
         user.active = "True"
         user.save()
-    return Response(status=status.HTTP_202_ACCEPTED)
+        return Response(status=status.HTTP_202_ACCEPTED)
+    return Response(status=status.HTTP_404_NOT_FOUND)

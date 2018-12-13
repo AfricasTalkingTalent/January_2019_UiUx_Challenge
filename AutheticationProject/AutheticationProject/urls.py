@@ -11,5 +11,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('get-users', get_users),
     path('sign-up', process_signup_data),
-    path('veify', process_verification),
+    path('verify', process_verification),
 ]
