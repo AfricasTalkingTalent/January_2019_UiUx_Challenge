@@ -6,7 +6,9 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # Handle successful signup
+      flash.now[:success] = 'Welcome to AT'
+      text = 'Karibu AT'
+      @user.send_sms text
     else
       render 'new'
     end
