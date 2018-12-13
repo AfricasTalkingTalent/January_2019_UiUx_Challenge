@@ -63,6 +63,14 @@
                             <input class="input100" type="text" name="username" required>
                             <span class="focus-input100"></span>
                         </div>
+                        <?php
+                        $url = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+                        //checking string position
+                        if(strpos($url,'user=exists')){
+                            echo "<div class=\"alert alert-danger\" style=''> User already exists</div>";
+                        }
+                        ?>
 
                         <div class="wrap-input100 validate-input m-b-26">
                             <span class="label-input100">Phone Number</span>
