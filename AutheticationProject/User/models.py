@@ -10,6 +10,7 @@ class User(models.Model):
     email_address = models.CharField(max_length=250, blank=True, null=True)
     phone_number = models.CharField(max_length=100, blank=True, null=True)
     verificaton = models.CharField(max_length=250, null=True, blank=True)
+    password = models.CharField(max_length=250, null=True, blank=True)
     active = models.CharField(
         max_length=200, null=True, blank=True, default='False')
 

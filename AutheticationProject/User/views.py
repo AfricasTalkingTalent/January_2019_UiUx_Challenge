@@ -10,6 +10,8 @@ import uuid
 from .models import User
 import africastalking
 from random import randint
+from django.http import HttpResponse
+from django.shortcuts import render
 
 
 @api_view(['GET'])
@@ -87,3 +89,7 @@ def process_verification(request):
         user.save()
         return Response(status=status.HTTP_202_ACCEPTED)
     return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+def load_login_page(request):
+    return render(request, 'signup.html')

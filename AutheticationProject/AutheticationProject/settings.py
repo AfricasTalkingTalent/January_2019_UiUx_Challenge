@@ -55,7 +55,9 @@ ROOT_URLCONF = 'AutheticationProject.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            "/home/Ogutu/Desktop/Africa'sTalking/AT/Challenge/January_2019_UiUx_Challenge/AutheticationProject/User/templates",
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
