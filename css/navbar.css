@@ -90,4 +90,12 @@ body {
     font-size: 60px;
     margin-top: -20%;
 }
-
+.success{
+    margin-top: 5%;
+    text-align: center;
+}
+.success h1{
+    color: #800020;
+    font-family: "Remachine Script Personal Use";
+    font-size: 80px;
+}
