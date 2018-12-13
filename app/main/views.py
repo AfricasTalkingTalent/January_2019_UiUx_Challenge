@@ -1,11 +1,12 @@
-from flask import render_template
+from flask import render_template, request, redirect, url_for
 
-from app import app
-
-from .request import send_sms
+from . import main
 
 
-@app.route('/')
+from ..request import send_sms
+
+
+@main.route('/')
 def index():
 
     message = 'This is a tryx'

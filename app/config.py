@@ -13,7 +13,7 @@ class ProdConfig(Config):
     Args:
         Config: The parent configuration class with General configuration settings
     '''
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://username:password@localhost/atlogin'
 
 
 class DevConfig(Config):
@@ -25,3 +25,9 @@ class DevConfig(Config):
     '''
 
     DEBUG = True
+
+
+config_options = {
+    'development': DevConfig,
+    'production': ProdConfig
+}
