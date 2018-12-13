@@ -17,7 +17,7 @@ public class LocalServer {
     private static final String APIKey = "af68fb095c6e1f14c13d5d98ab62b3548ad09d624b061d6802fc62618cb059ba"; //Put your API Key here
 
     //for our server's port. Will use 8080
-    private static final int port = 8080;
+    private static final int port = 8081;
 
     /*
     Now, to our main method
