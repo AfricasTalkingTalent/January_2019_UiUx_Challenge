@@ -27,11 +27,17 @@ app.get('/verify', function(req, res) {
     res.sendFile(__dirname + "/views/verification.html");
   });
 
+//create random verification code
+function randomInRange(from, to) {
+    var r = Math.random();
+    return Math.floor(r * (to - from) + from);
+}
+
 app.post('/', function(request, response){
     // Use the service
     const moses = {
         to:  request.body.phone,
-        message: "Hello, it's Samuel Barasa."
+        message: `Your verification code is : ${randomInRange(1,10000)}`
     }
     // Send message and capture the response or error
     sms.send(moses)
