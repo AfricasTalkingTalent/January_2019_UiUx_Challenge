@@ -1,0 +1,1 @@
+C:\Users\user\source\repos\ATalking\ATalking\ATalking.UWP\ATalking.UWP.csproj;x86

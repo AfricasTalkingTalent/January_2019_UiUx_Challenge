@@ -1,0 +1,11 @@
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\bin\Debug\netstandard2.0\ATalking.deps.json
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\bin\Debug\netstandard2.0\ATalking.dll
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\App.xaml.g.cs
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\MainPage.xaml.g.cs
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.AssemblyInfoInputs.cache
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.AssemblyInfo.cs
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\bin\Debug\netstandard2.0\ATalking.pdb
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.dll
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.pdb
+C:\Users\user\source\repos\ATalking\ATalking\ATalking\obj\Debug\netstandard2.0\ATalking.csprojAssemblyReference.cache

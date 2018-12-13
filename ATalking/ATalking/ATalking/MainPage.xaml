@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ATalking"
+             x:Class="ATalking.MainPage">
+
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Margin="0,10,0,0" Grid.Row="0">
+
+
+                <Image Source="icon.png" Opacity="0.6" VerticalOptions="Start" Margin="0,3,0,0"/>
+                <Label Text="UX/UI Design Challenge" TextColor="#109246"/>
+
+            </StackLayout>
+
+            <Grid Grid.Row="1" Margin="20,0,20,0">
+
+                <Grid.RowDefinitions>
+
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Image Source="Cohort.png" HeightRequest="70" VerticalOptions="EndAndExpand"/>
+                <Entry x:Name="Username_lbl"  Grid.Row="1" Placeholder="Username" PlaceholderColor="#bababa" FontSize="16"/>
+                <Entry x:Name="Phone_lbl" Grid.Row="2" Placeholder="Phone Number" PlaceholderColor="#bababa" FontSize="16"/>
+                <Entry x:Name="Password_lbl" Grid.Row="3" Placeholder="Password" PlaceholderColor="#bababa" FontSize="16"/>
+                <Button x:Name="Btn_Submit" Text="Submit" Clicked="Btn_Submit_Clicked" BackgroundColor="#3897f0" TextColor="White" HeightRequest="50" VerticalOptions="Start" Grid.Row="4"/>
+
+
+                <Grid Grid.Row="5">
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+
+
+                    </Grid.ColumnDefinitions>
+                    <Label BackgroundColor="#bababa" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                    <!--<Label Text="" Grid.Column="1" VerticalOptions="Center" Margin="10,0,10,0"/>-->
+                    <Image Source="gf.png" Grid.Column="1" VerticalOptions="Center" Margin="10,0,10,0"/>
+
+                    <Label BackgroundColor="#bababa" Grid.Column="2" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+
+
+                </Grid>
+
+            </Grid>
+
+
+        </Grid>
+
+
+    </ContentPage.Content>
+</ContentPage>
