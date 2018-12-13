@@ -1,0 +1,15 @@
+.container{
+    margin: 10em auto;
+    width: 40%;
+    display: block;
+    border: black 0.2em solid;
+    border-radius: 2em;
+    padding: 2em;
+}
+
+h1{
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 1em;
+}
+

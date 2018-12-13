@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title> Confirm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
+   
+    
+</head>
+<body>
+    <div class="container">
+        <h1>Confirm</h1>
+        <form action="confirm.php" role="form" method="post">
+ 
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="confirmation_code">Enter the 8 digit code you received to confirm your phone number:</label>
+                    <div class="input-group">
+                        <div class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></div>
+                        <input type="text" name="confirmation_code" id="confirmation_code" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            <input type="submit" class="btn btn-info" value="CONFIRM">
+        </form>
+    </div>
+    <script src="bootstrap-3.3.7-dist/js/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.js"></script>
+</body>
+</html>
