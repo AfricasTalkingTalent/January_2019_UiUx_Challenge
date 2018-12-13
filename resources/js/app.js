@@ -41,12 +41,14 @@
 
 require('./bootstrap');
 import Vue from 'vue'
+import axios from 'axios'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import SignUp from './components/SignUp'
 
 Vue.use(Vuetify)
+Vue.use(axios)
 
 Vue.config.productionTip = false
 

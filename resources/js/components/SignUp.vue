@@ -62,7 +62,7 @@
                       <v-flex sm5>
                         <v-text-field class="form-field"
                           v-model="phone"
-                          :rules="emptyRules"
+                          :rules="[emptyRules, format]"
                           label="Phone No."
                           required
                         ></v-text-field>
@@ -92,9 +92,9 @@
 
                       <v-btn id="signup-btn"
                         :disabled="!valid"
-                        @click="submit"
+                        @click="handleSubmit"
                       > 
-                        <span v-if="!logging">sign up</span>
+                        <span v-if="!signingup">sign up</span>
                         <hollow-dots-spinner
                           :animation-duration="1000"
                           :dot-size="9"
@@ -103,6 +103,11 @@
                           v-else
                         />
                       </v-btn>
+                     <div v-show="error !== ''">
+                      <p style="color:red;">
+                        {{error}}
+                      </p>
+                     </div>
                     </v-form>
                   </v-stepper-content>
 
@@ -113,7 +118,7 @@
                     <v-flex sm6 style="margin:auto;">
                       <v-text-field class="form-field"
                         v-model="verify_code"
-                        :rules="emptyRules"
+                        :rules="[emptyRules, validCode]"
                         label="Code"
                         required
                       ></v-text-field>
@@ -122,7 +127,7 @@
                         :disabled="codeEmpty"
                         @click="verify"
                       > 
-                        <span v-if="!logging">verify</span>
+                        <span v-if="!signingup">verify</span>
                         <hollow-dots-spinner
                           :animation-duration="1000"
                           :dot-size="9"
@@ -157,9 +162,12 @@ export default {
       signingup: false,
       country_code: '',
       fname: '',
+      code: '',
       el: 0,
       lname: '',
       phone: '',
+      error: '',
+      invalid_code: false,
       verify_code: '',
       emptyRules: [
         v => !!v || 'Field is required',
@@ -175,26 +183,70 @@ export default {
   },
   components: {HollowDotsSpinner},
   computed: {
+    // computed values for validations
     passwordConfirm () {
       return this.password === this.confirm_password || `Passwords don't match`
     },
     codeEmpty () {
       return this.verify_code === '' ? true : false
+    },
+    format () {
+      return this.phone.charAt(0) !== '0' || 'Invalid Phone Number, omit leading "0" eg.8138XXXXXX'
+    },
+    phone_no () {
+      return `+${this.country_code}${this.phone}`
+    },
+    validCode () {
+      return !this.invalid_code || 'Code does not match'
     }
   },
   methods : {
-    submit(e){
+    handleSubmit(e){
       e.preventDefault()
-      // if form okay
-      if (this.password.length > 0) {
+      // if form okay send code to phone
+      if (this.valid) {
         this.signingup = true
-        this.el = 2
+        axios.post(`${location.href}api/message`, {phone_no: this.phone_no})
+        .then(response => {
+          if(response.data.response.status === 'error'){
+            this.error = "An error occured, Please try again later"
+            this.signingup = false
+          } else {
+            this.code = response.data.message // get the code sent so we can validate on client side 
+            this.el = 2
+            this.signingup = false
+          }
+        }).catch(error => {
+          this.error = "An error occured, Please try again later"
+          this.signingup = false
+        })
       }
     },
     verify(e){
       e.preventDefault()
-      // if code matches, register user
-      this.el = 3
+      // check if code matches, true ? register user
+      this.signingup = true
+      if (Number(this.verify_code) === this.code) {
+        axios.post(`${location.href}api/register`, {
+          first_name: this.fname,
+          last_name: this.lname,
+          country_code: this.country_code,
+          phone_no: this.phone,
+          password: this.password
+        }).then(response => {
+          this.signingup = false
+          this.el = 3
+        }).catch(error => {
+          this.error = "An error occured, Please try again later"
+          this.signingup = false
+        })
+      } else {
+        // delay checked response a little so the dot spinner will flex small :)
+        setTimeout(()=> {
+          this.signingup = false
+          this.invalid_code = true
+        },3000)
+      }
     }
   }
 }
