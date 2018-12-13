@@ -35,7 +35,7 @@ label {
     font-weight: bold;
 }
 
-input[type=text], input[type=number], input[type=email],input[type=password] {
+input[type=text], input[type=tel], input[type=email],input[type=password] {
     background-color: transparent;
     border: 1px #cccccc solid;
     width: 90%;
