@@ -41,12 +41,14 @@ def process_signup_data(request):
     last_name = data["last_name"]
     phone_number = data["phone_number"]
     email = data["email"]
+    password = data["password"]
     user, created = User.objects.update_or_create(
         email_address=email,
         defaults={
             "first_name": first_name,
             "last_name": last_name,
             "phone_number": phone_number,
+            "password": password
         }
     )
     user.verification = generate_verification_code()
@@ -86,6 +88,7 @@ def process_verification(request):
         return Response(status=status.HTTP_404_NOT_FOUND)
     if user.verificaton == code:
         user.active = "True"
+        user.verification = ""
         user.save()
         return Response(status=status.HTTP_202_ACCEPTED)
     return Response(status=status.HTTP_404_NOT_FOUND)
