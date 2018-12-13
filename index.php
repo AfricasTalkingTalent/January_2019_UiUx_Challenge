@@ -66,7 +66,7 @@
 
                         <div class="wrap-input100 validate-input m-b-26">
                             <span class="label-input100">Phone Number</span>
-                            <input class="input100" type="text" name="phne" required>
+                            <input class="input100" type="text" name="phne" required placeholder="+254 7xx xxx xxx">
                             <span class="focus-input100"></span>
                         </div>
 
