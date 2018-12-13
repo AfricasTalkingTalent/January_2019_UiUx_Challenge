@@ -14,10 +14,9 @@ section {
 
 .center {
   text-align: center;
-}
-
-.center h1 {
-  margin-bottom: 10px;
+  h1 {
+    margin-bottom: 10px;
+  }
 }
 
 /* Typography */
@@ -58,12 +57,11 @@ p {
   letter-spacing: -1px;
   padding-top: 9px;
   font-weight: bold;
-}
-
-#logo:hover {
-  color: #fff;
-  text-decoration: none;
-  cursor: pointer;
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 .nav>.green-item {
