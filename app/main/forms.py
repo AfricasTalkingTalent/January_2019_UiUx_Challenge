@@ -6,7 +6,7 @@ from ..models import User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Enter your username', validators=[Required()])
-    phone_no = StringField('Your phone number',
+    phone_no = StringField('Your phone number start with country code eg +XXX phone number',
                            validators=[Required()])
     # password = PasswordField('Password', validators=[Required(), EqualTo(
     #     'password_confirm', message='Passwords must match')])
@@ -26,3 +26,4 @@ class RegistrationForm(FlaskForm):
 class TokenForm(FlaskForm):
     token = StringField('Please enter security token?',
                         validators=[Required()])
+    submit = SubmitField('token')
