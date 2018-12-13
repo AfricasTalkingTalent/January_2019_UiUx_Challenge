@@ -143,3 +143,14 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; /* Removes leftover margin */
 }
 
+#error-message{
+  position: absolute;
+  top: 10%;
+  left: 25%;
+  padding: 1em;
+  background: rgba(250,100,100,.9);
+  z-index: 1;
+  border-radius: 5px;
+  min-width: 50%;
+  text-align: center;
+}

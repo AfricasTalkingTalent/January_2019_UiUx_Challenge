@@ -2,7 +2,7 @@ import sys
 import config
 import json
 
-from flask import Flask, render_template, request, make_response, jsonify, redirect, url_for, flash, session
+from flask import Flask, render_template, request, make_response, jsonify
 
 import utils;
 
@@ -23,25 +23,15 @@ def index():
 
 		if verification:
 			verified = verifiedUser(num)
-			print(verified)
 
-			# resp = jsonify(success=True, message="Successful Registration")
-			# resp.status_code = 200
-
-			# return resp
 			return render_template('success.html', user = verified)
-			# return redirect('/', code=200)
 		else:
 			deleteVerification(num)
-			# resp = jsonify(success=False, message="Registration failed")
-			# resp.status_code = 404
 			error = 'Invalid credentials'
 			user = {
 				'name': req['name'],
 				'number': num,
 				}
-			# print(user)
-			# flash(error)
 
 	return render_template('index.html', error = error, user = user)
 
@@ -49,7 +39,7 @@ def index():
 @app.route("/sendOTP", methods=['POST'])
 def sendOTP():
 	req = request.json;
-	# print(req['name'])
+
 	if req != None or req != "":
 		code = utils.generateCode()
 		number = utils.numberFormatter(req['number'])
@@ -80,14 +70,11 @@ from flask_marshmallow import Marshmallow
 import os
 import datetime
 
-# basedir = os.path.abspath(os.path.dirname(__file__))
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'db.sqlite3')
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 class User(db.Model):
 	"""docstring for User"""
-	# id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(32))
 	number = db.Column(db.String(15), primary_key=True)
 	password = db.Column(db.String(190))
@@ -176,18 +163,9 @@ def verifyCode(number, code):
 	number = number;
 	code = code;
 
-	# verification = Verification.query.all()
-	# verification = Verification.query.get(number)
 	verification = Verification.query.filter_by(number=number).order_by('-id')[0]
 
-	# return verification_schema.jsonify(verification);
-
-	# print(verifications_schema.jsonify(verification));
-
 	data = json.loads(verification_schema.dumps(verification).data)
-
-	# # return data
-	# return {'code': int(code), 'data': data['code']}
 
 	if int(code) == data['code']:
 		db.session.delete(verification)
@@ -197,10 +175,8 @@ def verifyCode(number, code):
 	return False
 
 def deleteVerification(number):
-	# user = User.query.filter_by(number=number).first()
 	verification = Verification.query.filter_by(number=number).first()
 
-	# db.session.delete(user)
 	db.session.delete(verification)
 	db.session.commit()
 
@@ -237,21 +213,8 @@ class SMS:
 			print('Encountered an error while sending: %s' % str(e))
 			# raise e
 
-		
-
 ### __ END AFRICASTALKING FUNCTIONS ###
 
 
 if __name__ == '__main__':
-	# env = sys.argv[1] if len(sys.argv) > 2 else 'dev'
-
-	# if env == 'dev':
-	# 	app.config = config.DevelopmentConfig
-	# elif env == 'prod':
-	# 	app.config = config.ProductionConfig
-	# else:
-	# 	raise ValueError('Invalid environment name')
-
-    # app.debug = True
-
 	app.run()

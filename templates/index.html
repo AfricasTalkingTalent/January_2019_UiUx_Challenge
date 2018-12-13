@@ -17,20 +17,6 @@
   <div class="backLeft"></div>
 </div>
 
-<style>
-  #error-message{
-    position: absolute;
-    top: 10%;
-    left: 25%;
-    padding: 1em;
-    background: rgba(250,100,100,.9);
-    z-index: 1;
-    border-radius: 5px;
-    min-width: 50%;
-    text-align: center;
-  }
-</style>
-
 {% if error %}
 <div id="error-message" >
     Registration unsuccessful, please try again...    
@@ -54,19 +40,16 @@
             <input id="password" type="password" name="password" placeholder="password" required />
             <input id="password-confirm" type="password" name="password-confirm" placeholder="confirm password" required />
           </div>
-          <!-- <div class="form-group"></div>
-          <div class="form-group"></div>
-          <div class="form-group"></div> -->
-        <!-- </form> -->
+
         <button id="goLeft" cslass="off" type="button">Sign Up</button>
-        <!-- <button>Sign up</button> -->
+        
       </div>
     </div>
     <div class="right">
       <div class="content">
         <h2>Verification</h2>
         <p id="vermessage"></p>
-        <!-- <form method="post" onsubmit="return false;"> -->
+        
           <div class="form-group">
             <label for="code" class="form-label">One Time Password</label>
             <input id="code" type="number" name="code" placeholder="123456" required/>

@@ -69,6 +69,11 @@ function verifyPassword() {
     return false;
   }
 
+  if (password.length < 6) {
+    alert("Password must be 6 characters or more");
+    return false;
+  }
+
   if (password != cpassword){
     alert("Passwords have to match");
     return false;
