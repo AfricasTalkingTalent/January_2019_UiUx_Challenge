@@ -1,3 +1,7 @@
+## UI/UX of the working application I've developed.
+
+![](preview.gif)
+
 # UI/UX Code Challenge for the January 2018 Cohort
 
 Here's the challenge for anyone hoping to join the UI/UX team for the January to March Cohort at Africa's Talking. 
