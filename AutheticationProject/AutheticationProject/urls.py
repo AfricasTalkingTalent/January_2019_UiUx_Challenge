@@ -10,8 +10,8 @@ router = DefaultRouter()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('get-users', get_users),
-    path('sign-up', process_signup_data),
-    path('verify', process_verification),
-    path('home',load_login_page),
+    path('sign-up/', process_signup_data),
+    path('verify/', process_verification),
+    path('register',load_login_page),
     path('verify-user',verify_user)
 ]

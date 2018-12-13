@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/style.css">
+    <script src="js/script.js"></script>
     <title>Stack | Register</title>
     {% load static %}
 
@@ -18,23 +19,50 @@
         <a href="" class="right">LOGIN</a>
     </nav>
     <form-container class="content form-container">
-        <form action="">
+        <form class="forms">
             <label for="first-name" class="input-label">First name</label><br>
-            <input type="text" class="input-field"><br><br>
+            <input type="text" class="input-field" required><br><br>
             <label for="last-name" class="input-label">Last name</label><br>
-            <input type="text" class="input-field"><br><br>
+            <input type="text" class="input-field" required><br><br>
             <label for="email" class="input-label">Email</label><br>
-            <input type="email" id="email" class="input-field"><br><br>
+            <input type="email" id="email" class="input-field" required><br><br>
             <label for="password" class="input-label">Password</label><br>
-            <input type="password" id="passwd" class="input-field"><br><br>
+            <input type="password" id="passwd" class="input-field" required><br><br>
             <label for="conf-passwd" class="input-label">Confirm Password</label><br>
-            <input type="password" id="conf-passwd" class="input-field"><br><br>
-            <input type="button" value="Singup" class="button" style="width:100%" onclick="window.location.href='http://127.0.0.1:8000/verify-user'">
+            <input type="password" id="conf-passwd" class="input-field" required><br><br>
+            <input type="button" value="Singup" class="button" style="width:100%" onclick="processSingUp()">
         </form>
     </form-container>
     <footer>
         <p>&copy;Brian-stackoverflow-lite 2018</p>
     </footer>
+    <script>
+        const Url = 'http://127.0.0.1:8000/sign-up/'
+        function processSingUp() {
+            var xhr = new XMLHttpRequest();
+            xhr.open(form.method, form.action, true);
+            xhr.setRequestHeader('Conent-Type', 'application/json;charset=UTF-8');
+            var object = {
+                "first_name": "brian",
+                "last_name": "ogutu",
+            };
+            xhr.send(JSON.stringify(object))
+            // const Data = {
+            //     email: "Brian",
+            //     first_name: "Okinyi"
+            // };
+            // const otherParam = {
+            //     headers: {
+            //         "content-type": "application/json;charset=UTF-8"
+            //     },
+            //     body: Data,
+            //     method: "POST"
+            // };
+            // fetch(Url)
+            //     .then(data => { return data.json() })
+            //     .then(res => { console.log(res) })
+        }
+    </script>
 </body>
 
 </html>
