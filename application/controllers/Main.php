@@ -12,7 +12,7 @@ class Main extends CI_Controller{
                 'fname' => $this->input->post('fname'),
                 'lname' => $this->input->post('lname'),
                 'phone_number' => '+254'.$this->input->post('phone_number'),
-                'password' => $this->input->post('pass'),
+                'password' => password_hash($this->input->post('pass'),PASSWORD_BCRYPT),
             ),
             'auth' => array(
                 'phone_number' => '+254'.$this->input->post('phone_number'),
@@ -26,8 +26,8 @@ class Main extends CI_Controller{
             $this->session->set_userdata($data['user']);
             
             //send message with token
-            $msg = 'Your authorization token is '.$data['auth_token'];
-            if(send_msg($data['phone_number'],$msg)){
+            $msg = 'Your authorization token is '.$data['auth']['auth_token'];
+            if(send_msg($data['user']['phone_number'],$msg)){
                 $res = array(
                     'type' => 'success',
                     'msg' => 'Authorization code sent to the phone number provided'
@@ -44,6 +44,10 @@ class Main extends CI_Controller{
     }
 
     function validate_auth_token(){
-        echo json_encode($this->main_model->verify($this->session->userdata('phone_number'),$this->input->post('auth_token')));
+        echo json_encode($this->main_model->verify_token($this->session->userdata('phone_number'),$this->input->post('auth_token')));
+    }
+
+    function check_phone_exists(){
+        echo json_encode($this->main_model->check_phone_exists($this->input->post('phone_number')));
     }
 }

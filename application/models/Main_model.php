@@ -27,11 +27,27 @@ class Main_model extends CI_Model{
     /**
      * Find auth token by phone number
      */
-    function verify($phone_number,$auth_token){
+    function verify_token($phone_number,$auth_token){
         $this->db->where('phone_number',$phone_number);
         $this->db->where('auth_token',$auth_token);
         $this->db->where('verified',0);
         $query = $this->db->get('auth');
-        $result = $query->num_rows() == 1;
+        if ($query->num_rows() == 1){
+            $this->db->where('phone_number',$phone_number);
+            $this->db->where('auth_token',$auth_token);
+            $this->db->update('auth',array('verified'=>1));
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    /**
+     * Check phone number exists
+     */
+    function check_phone_exists($phone_number){
+        $this->db->where('phone_number',$phone_number);
+        $query = $this->db->get('users');
+        return $query->num_rows() == 0;
     }
 }

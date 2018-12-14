@@ -30,69 +30,118 @@
             <h2 class="display-4 font-size-md text-white">The new builders in town</h2>
         </div>
         <div class="right">
-            <div class="content content-full pt-20">
-                <h4 class="font-w400 text-primary">Create a new account</h4>
-                <form  action="<?= base_url('main/signup_process');?>" class="signup_form" method="post">
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="form-material">
-                                <input type="text" class="form-control" id="fname" name="fname" required>
-                                <label for="fname">First Name</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="form-material">
-                                <input type="text" class="form-control" id="lname" name="lname" required>
-                                <label for="lname">Last Name</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="form-material input-group">
-                                <div class="input-group-append">
-                                    <span class="input-group-text">
-                                        +254
-                                    </span>
-                                </div>
+            <ul class="nav nav-tabs nav-tabs-block d-none" data-toggle="tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#signup_content">Signup</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#verification_content">Token</a>
+                </li>
+            </ul>
 
-                                <input type="text" class="form-control" id="phone_number" name="phone_number" required>
-                                <label for="phone_number">Phone number</label>
+            <div class="block-content tab-content overflow-hidden">
+                <!-- Signup tab -->
+                <div class="tab-pane fade fade-right show active" id="signup_content" role="tabpanel">
+                    <div class="content content-full pt-20">
+                        <h4 class="font-w400 text-primary">Create a new account</h4>
+                        <form  action="<?= base_url('main/signup_process');?>" class="signup_form" method="post">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material">
+                                        <input type="text" class="form-control" id="fname" name="fname" required>
+                                        <label for="fname">First Name</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="form-material">
-                                <input type="password" class="form-control" id="pass" name="pass" required>
-                                <label for="pass">Password</label>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material">
+                                        <input type="text" class="form-control" id="lname" name="lname" required>
+                                        <label for="lname">Last Name</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="form-material">
-                                <input type="password" class="form-control" id="pass-conf" name="pass-conf" required>
-                                <label for="pass-conf">Password Confirmation</label>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material input-group">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                +254
+                                            </span>
+                                        </div>
+
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number" required>
+                                        <label for="phone_number">Phone number</label>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-12">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="terms" name="terms" required>
-                                <label class="custom-control-label" for="terms">I agree to Terms &amp; Conditions</label>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material">
+                                        <input type="password" class="form-control" id="pass" name="pass" required>
+                                        <label for="pass">Password</label>
+                                    </div>
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material">
+                                        <input type="password" class="form-control" id="pass-conf" name="pass-conf" required>
+                                        <label for="pass-conf">Password Confirmation</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="terms" name="terms" required>
+                                        <label class="custom-control-label" for="terms">I agree to Terms &amp; Conditions</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-hero btn-alt-success">
+                                    <i class="fa fa-plus mr-10"></i> Create Account
+                                </button>
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+                <!-- END Signup tab -->
+
+                <!-- Verification tab -->
+                <div class="tab-pane fade fade-right" id="verification_content" role="tabpanel">
+                    <div class="content content-full pt-20">
+                        <h4 class="font-w400 text-primary">Verify account creation</h4>
+                        <!-- Primary Alert -->
+                        <div class="alert alert-primary" role="alert">
+                            <h3 class="alert-heading font-size-h4 font-w400">Authorization code</h3>
+                            <p class="mb-0">A message has been sent to <span><?php if($this->session->phone_number) echo $this->session->phone_number;?></span> <br>
+                                Didn't get message? <a class="alert-link text-info" href="javascript:void(0)" id="resend_token">Resend</a> <br>
+                            </p>
                         </div>
+                        <!-- END Primary Alert -->
+                        <form action="<?= base_url('main/validate_auth_token');?>" id="auth_token_form" method="post">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    <div class="form-material">
+                                        <input type="text" class="form-control" id="auth_token" name="auth_token" required>
+                                        <label for="auth_token">Enter code sent</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-sm btn-hero btn-alt-success">
+                                    <i class="fa fa-check mr-10"></i> Verify
+                                </button>
+                            </div>
+                        </form>
+
+
                     </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-hero btn-alt-success">
-                            <i class="fa fa-plus mr-10"></i> Create Account
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <!-- END Verification tab -->
             </div>
         </div>
     </div>
@@ -113,6 +162,9 @@
         $base_js.'main.js'
     );
 ?>
+    <script>
+        var baseURL = '<?= base_url();?>';
+    </script>
     <?php foreach($scripts as $script):?>
         <script src="<?= $script?>"></script>
     <?php endforeach; ?>
